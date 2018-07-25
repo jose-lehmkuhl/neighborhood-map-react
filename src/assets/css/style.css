@@ -1,0 +1,34 @@
+/* Header */
+header {
+    background-color: #444242;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    color: white;
+    padding: 5px;
+    box-shadow: 2px 7px 20px -2px #000;
+    z-index: 9998
+}
+
+header h1 {
+    margin: 0 auto;
+}
+header button {
+    color: white;
+    background-color: #444242;
+    border-color: #444242;
+    font-size: 25px
+}
+/* Aside */
+aside {
+    background-color: #444242;
+    position: fixed;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 2px 20px -2px #000;
+    z-index: 9997;
+}

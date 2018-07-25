@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header';
+import Aside from './components/Aside';
+
 
 class App extends Component {
+  state = {
+    aside: false
+  }
+
+  onPressHeaderButton = () => {
+    this.setState({ aside: this.state.aside ? false : true });
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Header onPress={this.onPressHeaderButton}/>
+        {this.state.aside && <Aside />}
       </div>
     );
   }
