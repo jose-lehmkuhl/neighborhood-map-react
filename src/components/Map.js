@@ -1,5 +1,4 @@
 import React,{ Component } from 'react';
-import { throws } from 'assert';
 
 export default class Map extends Component {
     state = {
@@ -33,8 +32,10 @@ export default class Map extends Component {
 
     showSelected = id => {
         for (const marker of this.state.markers) {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
             if (marker.id === id) {
                 marker.setAnimation(window.google.maps.Animation.BOUNCE);
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
                 this.state.map.setCenter(marker.position);
                 for (const infowindow of this.state.infowindows) {
                     infowindow.close();
@@ -58,6 +59,7 @@ export default class Map extends Component {
                 position,
                 title,
                 id,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             });
             markers.push(marker);
             const infowindow = this.makeInfoWindow(marker);
@@ -65,8 +67,10 @@ export default class Map extends Component {
             marker.addListener('click', () => {
                 this.state.markers.forEach(el => {
                     el.setAnimation(null);
+                    el.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 });
                 marker.setAnimation(window.google.maps.Animation.BOUNCE);
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
                 this.state.infowindows.forEach(el => {
                     el.close();
                 });
@@ -93,6 +97,7 @@ export default class Map extends Component {
             infowindow.marker = marker;
             infowindow.addListener('closeclick', () => {
                 infowindow.marker.setAnimation(null);
+                infowindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
             })
             const foursquareLink = `https://pt.foursquare.com/v/${marker.id}`;
             infowindow.setContent(
