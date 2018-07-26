@@ -1,4 +1,5 @@
 import React,{ Component } from 'react';
+import { throws } from 'assert';
 
 export default class Map extends Component {
     state = {
@@ -13,7 +14,9 @@ export default class Map extends Component {
     }
 
     componentDidUpdate() {
-        this.showMarkers();
+        for (const marker of this.state.markers) {
+            marker.setMap(this.state.map);
+        }
         if (this.props.selected) {
             this.showSelected(this.props.selected);
         }
@@ -31,7 +34,7 @@ export default class Map extends Component {
     showSelected = id => {
         for (const marker of this.state.markers) {
             if (marker.id === id) {
-                marker.setMap(this.state.map);
+                marker.setAnimation(window.google.maps.Animation.BOUNCE);
                 this.state.map.setCenter(marker.position);
                 for (const infowindow of this.state.infowindows) {
                     infowindow.close();
@@ -39,8 +42,6 @@ export default class Map extends Component {
                         infowindow.open(this.state.map,marker);
                     }
                 }
-            } else {
-                marker.setMap(null);
             }
         }
     }
@@ -62,6 +63,10 @@ export default class Map extends Component {
             const infowindow = this.makeInfoWindow(marker);
             infowindows.push(infowindow);
             marker.addListener('click', () => {
+                this.state.markers.forEach(el => {
+                    el.setAnimation(null);
+                });
+                marker.setAnimation(window.google.maps.Animation.BOUNCE);
                 this.state.infowindows.forEach(el => {
                     el.close();
                 });
@@ -86,7 +91,9 @@ export default class Map extends Component {
             const infowindow = new window.google.maps.InfoWindow();
             infowindow.setContent('');
             infowindow.marker = marker;
-            
+            infowindow.addListener('closeclick', () => {
+                infowindow.marker.setAnimation(null);
+            })
             const foursquareLink = `https://pt.foursquare.com/v/${marker.id}`;
             infowindow.setContent(
                 `<div><h2>${marker.title}</h2><p>${address}</p><p><a href=${foursquareLink}>Link Foursquare</a></p></div>`
@@ -96,19 +103,14 @@ export default class Map extends Component {
     }
 
     showMarkers = () => {
-        if (this.props.selected !== ''){
-            this.props.onShowAll('');
-        }
         for (const marker of this.state.markers) {
             marker.setMap(this.state.map);
         }
     }
 
     render() {
-        console.log(this.state.infowindows)
         return (
             <div>
-                <button className="show-all" onClick={() => this.showMarkers()}>Show All</button>
                 <div id="map">
                 </div>
             </div>
