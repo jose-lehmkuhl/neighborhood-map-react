@@ -26,6 +26,9 @@ header button {
     border-color: #444242;
     font-size: 25px
 }
+header .filter-text {
+    padding-left: 5px;
+}
 /* Aside */
 aside {
     padding-top: 50px;
@@ -46,6 +49,9 @@ aside .list-item {
     font-size: 15px;
     background-color:  #444242;
     color: white;
+}
+aside .selected {
+    background-color: #000;
 }
 
 /* Map */

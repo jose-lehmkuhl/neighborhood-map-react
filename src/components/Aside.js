@@ -1,9 +1,10 @@
 import React from 'react';
 
-export default ({onPress, list}) => 
+export default ({onPress, list, selected}) => 
     <aside >
         {list.map(item => {
-            return <button className="list-item" key={item.id} onClick={() => onPress(item.id)}>
+            const classes = item.id === selected ? "list-item selected" : "list-item";
+            return <button className={classes} key={item.id} onClick={() => onPress(item.id)}>
                 {item.name}
             </button>
         })}

@@ -39,7 +39,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header onPress={this.onPressHeaderButton}/>
-        {this.state.aside && this.state.venues && <Aside list={this.state.venues} onPress={this.onListItemClick}/>}
+        {this.state.aside && this.state.venues && <Aside list={this.state.venues} selected={this.state.selectedVenue} onPress={this.onListItemClick}/>}
         {window.google && this.state.venues && <Map venues={this.state.venues} selected={this.state.selectedVenue}/>}
       </div>
     );
