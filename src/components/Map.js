@@ -4,7 +4,7 @@ export default class Map extends Component {
     state = {
         map: '',
         markers: '',
-        infowindows: ''
+        infowindows: '',
     }
 
     componentDidMount() {

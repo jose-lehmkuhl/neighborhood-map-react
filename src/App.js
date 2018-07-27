@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   onPressHeaderButton = () => {
-    this.setState({ aside: this.state.aside ? false : true });
+    this.setState({ aside: this.state.aside ? false : true, selectedVenue: '' });
   }
 
   onListItemClick = id => {
