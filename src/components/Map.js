@@ -51,14 +51,17 @@ export default class Map extends Component {
     }
 
     setSelectedAtributes(marker) {
-        marker.setAnimation(window.google.maps.Animation.BOUNCE);
         marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
         marker.setMap(this.state.map);
+        const lat = marker.position.lat() +0.002;
+        const lng = marker.position.lng();
+        this.state.map.setCenter({lat,lng});
         this.state.infowindows.forEach(el => {
             if(el.marker.id === marker.id) {
                 el.open(this.state.map,marker);
             }
         });
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
     }
 
     makeMarkers = () => {
@@ -98,9 +101,12 @@ export default class Map extends Component {
                 }
             }
         }
-            const infowindow = new window.google.maps.InfoWindow();
+            const infowindow = new window.google.maps.InfoWindow({
+                maxWidth: 200
+            });
             infowindow.setContent('');
             infowindow.marker = marker;
+            infowindow
             infowindow.addListener('closeclick', () => {
                 infowindow.marker.setAnimation(null);
                 infowindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
@@ -124,6 +130,7 @@ export default class Map extends Component {
             <div>
                 <div id="map">
                 </div>
+                <button className="show-all" onClick={this.showMarkers}>Show All</button>
             </div>
         );
     }
