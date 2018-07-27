@@ -31,20 +31,34 @@ export default class Map extends Component {
     }
 
     showSelected = id => {
+        this.clearMarkers();
         for (const marker of this.state.markers) {
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+            marker.setMap(null);
             if (marker.id === id) {
-                marker.setAnimation(window.google.maps.Animation.BOUNCE);
-                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
-                this.state.map.setCenter(marker.position);
-                for (const infowindow of this.state.infowindows) {
-                    infowindow.close();
-                    if(infowindow.marker === marker) {
-                        infowindow.open(this.state.map,marker);
-                    }
-                }
+                this.setSelectedAtributes(marker);
             }
         }
+    }
+
+    clearMarkers() {
+        this.state.markers.forEach(marker => {
+            marker.setAnimation(null);
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+        });
+        this.state.infowindows.forEach(el => {
+            el.close();
+        })
+    }
+
+    setSelectedAtributes(marker) {
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
+        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+        marker.setMap(this.state.map);
+        this.state.infowindows.forEach(el => {
+            if(el.marker.id === marker.id) {
+                el.open(this.state.map,marker);
+            }
+        });
     }
 
     makeMarkers = () => {
@@ -65,16 +79,8 @@ export default class Map extends Component {
             const infowindow = this.makeInfoWindow(marker);
             infowindows.push(infowindow);
             marker.addListener('click', () => {
-                this.state.markers.forEach(el => {
-                    el.setAnimation(null);
-                    el.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-                });
-                marker.setAnimation(window.google.maps.Animation.BOUNCE);
-                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
-                this.state.infowindows.forEach(el => {
-                    el.close();
-                });
-                infowindow.open(this.state.map,marker);
+                this.clearMarkers();
+                this.setSelectedAtributes(marker);
             });
         }
         this.setState({infowindows})
