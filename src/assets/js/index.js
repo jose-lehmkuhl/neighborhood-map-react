@@ -23,7 +23,7 @@ const tabHandler = (e) => {
 
     /* Handles tabbing on aside elements , when aside is rendered */
     if(document.querySelector('aside')) {
-        if(target === document.querySelector('aside').children[0]) { //checks if first list item is focused
+        if(target === document.querySelector('.filter-input')) { //checks if input is focused
             if (e.shiftKey && keyCode === 9) { //focus last item on shift tab
                 e.preventDefault();
                 document.querySelector('.close-list-button').focus();
@@ -32,7 +32,7 @@ const tabHandler = (e) => {
         if(target === document.querySelector('.close-list-button')) {   //checks if last item is focused
             if (!e.shiftKey && keyCode === 9) {
                 e.preventDefault();
-                document.querySelector('aside').children[0] .focus(); //focus first item on tab
+                document.querySelector('.filter-input').focus(); //focus input on tab
             }
         }
     }

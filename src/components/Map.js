@@ -16,8 +16,24 @@ export default class Map extends Component {
         for (const marker of this.state.markers) {
             marker.setMap(this.state.map);
         }
+        if (this.props.filter) {
+            this.filterMarkers(this.props.filtering);
+        }
         if (this.props.selected) {
             this.showSelected(this.props.selected);
+        }
+    }
+
+    filterMarkers = filter => {
+        filter = filter.toUpperCase();
+        for (const marker of this.state.markers) {
+            const title = marker.title.toUpperCase();
+            if (title.includes(filter)){
+                marker.setMap(this.state.map);
+            } else {
+                marker.setMap(null);
+            }
+
         }
     }
 
@@ -33,7 +49,6 @@ export default class Map extends Component {
     showSelected = id => {
         this.clearMarkers();
         for (const marker of this.state.markers) {
-            marker.setMap(null);
             if (marker.id === id) {
                 this.setSelectedAtributes(marker);
             }
@@ -127,6 +142,7 @@ export default class Map extends Component {
         for (const marker of this.state.markers) {
             marker.setMap(this.state.map);
         }
+        this.props.filter('');
     }
 
     render() {
@@ -135,7 +151,7 @@ export default class Map extends Component {
                 <div id="map">
                 </div>
                 <span tabIndex="0" className="pre-info not-visible">You are now on a infowindow</span>
-                <button className="show-all" onClick={this.showMarkers}>Show All</button>
+                <button className="show-all" onClick={() => {this.showMarkers(); this.props.filter('')}}>Show All</button>
                 <button tabIndex="-1" className="close-info not-visible" aria-label="Close InfoWindow" onClick={() => {this.clearMarkers(); document.querySelector('.filter-button').focus();}}></button>
             </div>
         );

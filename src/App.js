@@ -13,6 +13,7 @@ class App extends Component {
     map: '',
     venues: '',
     selectedVenue: '',
+    filter: '',
     foursquareError: ''
   }
 
@@ -25,7 +26,15 @@ class App extends Component {
   }
   componentDidUpdate() {
     if (this.state.aside) {
-      document.querySelector('.list-item').focus()
+      document.querySelector('.filter-input').focus()
+    }
+  }
+
+  filterInput = filter => {
+    if (!filter) {
+      this.setState({ filter, selectedVenue: '' });
+    } else {
+      this.setState({ filter });
     }
   }
 
@@ -50,11 +59,11 @@ class App extends Component {
       <div className="App">
         <Header onPress={this.onPressHeaderButton}/>
         {/*renders Aside component after venues have been fetched and aside has been set to true*/}
-        {this.state.aside && this.state.venues && <Aside list={this.state.venues} selected={this.state.selectedVenue} onPress={this.onListItemClick}/>}
+        {this.state.aside && this.state.venues && <Aside list={this.state.venues} filtering={this.state.filter} filter={this.filterInput} selected={this.state.selectedVenue} onPress={this.onListItemClick}/>}
         {/*Renders error message when failed to fetch venues*/}
         {this.state.foursquareError && <div className="error">Failed to load Foursquare, reload to try again</div>}
         {/*Renders Map after Venues were fetched and google maps is loaded in the window*/}
-        {window.google && this.state.venues && <Map venues={this.state.venues} selected={this.state.selectedVenue}/>}
+        {window.google && this.state.venues && <Map venues={this.state.venues} selected={this.state.selectedVenue} filtering={this.state.filter} filter={this.filterInput}/>}
         <Footer />
       </div>
     );

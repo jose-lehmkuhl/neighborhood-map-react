@@ -54,8 +54,11 @@ aside .list-item {
     background-color:  #444242;
     color: white;
 }
-aside .selected {
-    background-color: #000;
+aside .filter-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
+    padding: 10px;
 }
 
 /* Error */
