@@ -43,33 +43,33 @@ export default class Map extends Component {
 
     clearMarkers = () => {
         this.state.markers.forEach(marker => {
-            marker.setAnimation(null);
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+            marker.setAnimation(null);//removes animation for every marker 
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');//set default marker icon
         });
         this.state.infowindows.forEach(el => {
-            el.close();
+            el.close();//closes all infowindows
         })
     }
 
     setSelectedAtributes(marker) {
-        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
-        marker.setMap(this.state.map);
-        const lat = marker.position.lat() +0.002;
+        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');//set selected marker blue icon
+        marker.setMap(this.state.map);//shows marker on map
+        const lat = marker.position.lat() +0.002; //get a higher lat than the actual marker, so the screen center on the infowindow
         const lng = marker.position.lng();
         this.state.map.setCenter({lat,lng});
         this.state.infowindows.forEach(el => {
             if(el.marker.id === marker.id) {
-                el.open(this.state.map,marker);
+                el.open(this.state.map,marker);//open the infowindow for the selected marker
             }
         });
-        marker.setAnimation(window.google.maps.Animation.BOUNCE);
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);//adds marker animation
     }
 
     makeMarkers = () => {
         const markers = [];
         const infowindows = [];
         for (const venue of this.props.venues) {
-            const {lat, lng} = venue.location;
+            const {lat, lng} = venue.location; 
             const position = {lat,lng};
             const title = venue.name;
             const id = venue.id;
@@ -79,16 +79,16 @@ export default class Map extends Component {
                 id,
                 icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             });
-            markers.push(marker);
-            const infowindow = this.makeInfoWindow(marker);
-            infowindows.push(infowindow);
-            marker.addListener('click', () => {
+            markers.push(marker); //adds the marker to the markers array
+            const infowindow = this.makeInfoWindow(marker); //makes an infowindow for the marker
+            infowindows.push(infowindow); //adds infowindow to the infowindows array
+            marker.addListener('click', () => { //adds a listener to the marker, wich resets other markers to default and adds new style to the clicked one
                 this.clearMarkers();
                 this.setSelectedAtributes(marker);
             });
         }
-        this.setState({infowindows})
-        this.setState({ markers });
+        this.setState({infowindows}); //stores markers array to state
+        this.setState({ markers }); //stores infowindows array to state
     }
 
     makeInfoWindow = (marker) => {

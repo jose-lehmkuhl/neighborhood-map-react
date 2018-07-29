@@ -17,11 +17,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-  this.fetchVenues();
-   window.onload = () => {
-     this.setState({ google: true })
-     document.addEventListener('keydown', e => tabHandler(e))
-   }
+    this.fetchVenues();
+    window.onload = () => {
+      this.setState({ google: true })
+      document.addEventListener('keydown', e => tabHandler(e))
+    }
   }
   componentDidUpdate() {
     if (this.state.aside) {
@@ -49,8 +49,11 @@ class App extends Component {
     return (
       <div className="App">
         <Header onPress={this.onPressHeaderButton}/>
+        {/*renders Aside component after venues have been fetched and aside has been set to true*/}
         {this.state.aside && this.state.venues && <Aside list={this.state.venues} selected={this.state.selectedVenue} onPress={this.onListItemClick}/>}
+        {/*Renders error message when failed to fetch venues*/}
         {this.state.foursquareError && <div className="error">Failed to load Foursquare, reload to try again</div>}
+        {/*Renders Map after Venues were fetched and google maps is loaded in the window*/}
         {window.google && this.state.venues && <Map venues={this.state.venues} selected={this.state.selectedVenue}/>}
         <Footer />
       </div>
