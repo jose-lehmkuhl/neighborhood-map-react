@@ -17,6 +17,7 @@ Note that the app has a service worker to run offline first that, but for that y
 - Download the project from [this repository](https://github.com/jose-lehmkuhl/neighborhood-map-react.git).
 - While on the project directory in your terminal:
   - run `npm run build`
+  - go to the build folder
   - then `python -m SimpleHTTPServer 8000`
 - The app will run at [http://localhost:8000/](http://localhost:8000/).
 
