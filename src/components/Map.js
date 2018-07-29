@@ -38,9 +38,10 @@ export default class Map extends Component {
                 this.setSelectedAtributes(marker);
             }
         }
+        document.querySelector('.pre-info').focus();
     }
 
-    clearMarkers() {
+    clearMarkers = () => {
         this.state.markers.forEach(marker => {
             marker.setAnimation(null);
             marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
@@ -106,14 +107,17 @@ export default class Map extends Component {
             });
             infowindow.setContent('');
             infowindow.marker = marker;
-            infowindow
             infowindow.addListener('closeclick', () => {
                 infowindow.marker.setAnimation(null);
                 infowindow.marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
             })
             const foursquareLink = `https://pt.foursquare.com/v/${marker.id}`;
             infowindow.setContent(
-                `<div><h2>${marker.title}</h2><p>${address}</p><p><a href=${foursquareLink}>Link Foursquare</a></p></div>`
+                `<div>
+                    <h2 class="infowindow-header" aria-label="${marker.title} info" tabindex="0">${marker.title}</h2>
+                    <p tabindex="0" aria-label="adress, ${address}">${address}</p>
+                    <p tabindex="-1"><a class="infowindow-link" href=${foursquareLink}>Link Foursquare</a></p>
+                </div>`
             );
             return infowindow;
 
@@ -130,7 +134,9 @@ export default class Map extends Component {
             <div>
                 <div id="map">
                 </div>
+                <span tabIndex="0" className="pre-info not-visible">You are now on a infowindow</span>
                 <button className="show-all" onClick={this.showMarkers}>Show All</button>
+                <button tabIndex="-1" className="close-info not-visible" aria-label="Close InfoWindow" onClick={() => {this.clearMarkers(); document.querySelector('.filter-button').focus();}}></button>
             </div>
         );
     }

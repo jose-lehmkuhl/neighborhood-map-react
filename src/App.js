@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Aside from './components/Aside';
 import Footer from './components/Footer';
 import Map from './components/Map';
+import { tabHandler } from '../src/assets/js';
 
 
 class App extends Component {
@@ -16,10 +17,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.fetchVenues();
+  this.fetchVenues();
    window.onload = () => {
      this.setState({ google: true })
+     document.addEventListener('keydown', e => tabHandler(e))
    }
+  }
+  componentDidUpdate() {
+    if (this.state.aside) {
+      document.querySelector('.list-item').focus()
+    }
   }
 
   onPressHeaderButton = () => {

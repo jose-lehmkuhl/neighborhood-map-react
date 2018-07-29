@@ -86,6 +86,19 @@ button.show-all {
     width: 80px;
     bottom: 60px;
 }
+button.close-info {
+    width: 1px;
+    height: 1px;
+    border-color: #444242;
+    background-color: #444242;
+}
+button.close-info:focus{
+    outline: none;
+}
+.not-visible {
+    position: absolute;
+    left: -1000px;
+}
 
 /* Footer */
 footer {
