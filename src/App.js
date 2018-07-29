@@ -63,7 +63,7 @@ class App extends Component {
         {/*Renders error message when failed to fetch venues*/}
         {this.state.foursquareError && <div className="error">Failed to load Foursquare, reload to try again</div>}
         {/*Renders Map after Venues were fetched and google maps is loaded in the window*/}
-        {window.google && this.state.venues && <Map venues={this.state.venues} selected={this.state.selectedVenue} filtering={this.state.filter} filter={this.filterInput}/>}
+        {this.state.venues && <Map venues={this.state.venues} selected={this.state.selectedVenue} filtering={this.state.filter} filter={this.filterInput}/>}
         <Footer />
       </div>
     );

@@ -5,24 +5,32 @@ export default class Map extends Component {
         map: '',
         markers: '',
         infowindows: '',
+        error: false
     }
 
     componentDidMount() {
-        this.initMap();
-        this.makeMarkers();
+        window.initMap = this.initMap;
+        loadJS('https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBHomBHdIwWefOY0RQF2KXg2w-AWOYE0fw&callback=initMap', this.onMapsError);
     }
 
     componentDidUpdate() {
-        for (const marker of this.state.markers) {
-            marker.setMap(this.state.map);
-        }
-        if (this.props.filter) {
-            this.filterMarkers(this.props.filtering);
-        }
-        if (this.props.selected) {
-            this.showSelected(this.props.selected);
+        if (this.state.map) {
+            for (const marker of this.state.markers) {
+                marker.setMap(this.state.map);
+            }
+            if (this.props.filter) {
+                this.filterMarkers(this.props.filtering);
+            }
+            if (this.props.selected) {
+                this.showSelected(this.props.selected);
+            }
         }
     }
+
+    onMapsError = () => {
+        this.setState({ error: true });
+    }
+
 
     filterMarkers = filter => {
         filter = filter.toUpperCase();
@@ -43,6 +51,7 @@ export default class Map extends Component {
             zoom: 16,
             mapTypeControl: false
           });
+          this.makeMarkers();
           this.setState({map});
     }
 
@@ -96,14 +105,14 @@ export default class Map extends Component {
             });
             markers.push(marker); //adds the marker to the markers array
             const infowindow = this.makeInfoWindow(marker); //makes an infowindow for the marker
+            
             infowindows.push(infowindow); //adds infowindow to the infowindows array
             marker.addListener('click', () => { //adds a listener to the marker, wich resets other markers to default and adds new style to the clicked one
                 this.clearMarkers();
                 this.setSelectedAtributes(marker);
             });
         }
-        this.setState({infowindows}); //stores markers array to state
-        this.setState({ markers }); //stores infowindows array to state
+        this.setState({ infowindows, markers }); //stores infowindows and markers array to state
     }
 
     makeInfoWindow = (marker) => {
@@ -149,6 +158,7 @@ export default class Map extends Component {
         return (
             <div>
                 <div id="map">
+                {this.state.error && <div className="error">Failed to load Google Maps, please try again</div>}
                 </div>
                 <span tabIndex="0" className="pre-info not-visible">You are now on a infowindow</span>
                 <button className="show-all" onClick={() => {this.showMarkers(); this.props.filter('')}}>Show All</button>
@@ -156,4 +166,13 @@ export default class Map extends Component {
             </div>
         );
     }
+}
+
+function loadJS(src , onerror) {
+    var ref = window.document.getElementsByTagName("script")[0];
+    var script = window.document.createElement("script");
+    script.src = src;
+    script.async = true;
+    script.onerror = onerror;
+    ref.parentNode.insertBefore(script, ref);
 }
